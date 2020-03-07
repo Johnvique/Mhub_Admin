@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use File;
 use App\Settings;
 use Illuminate\Http\Request;
 
@@ -15,6 +15,8 @@ class SettingsController extends Controller
     public function index()
     {
         //
+        $settings = Settings::all();
+        return view('Admin/Setting/settings',compact('settings'));
     }
 
     /**
@@ -36,6 +38,27 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         //
+        if ($request->hasFile('logo')) {
+            $filenameWithExt = $request->file('logo')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('logo')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $path = $request->file('logo')->move(public_path('album'), $fileNameToStore);
+        } else {
+            $fileNameToStore = 'default.jpg';
+        }
+
+
+        $setting = new Settings;
+        $setting->business_name=$request->get('business_name');
+        $setting->box_address=$request->get('box_address');
+        $setting->location=$request->get('location');
+        $setting->vision=$request->get('vision');
+        $setting->mission=$request->get('mission');
+        $setting->logo=$fileNameToStore;
+
+        $setting->save();
+        return redirect()->back();
     }
 
     /**
@@ -55,9 +78,13 @@ class SettingsController extends Controller
      * @param  \App\Settings  $settings
      * @return \Illuminate\Http\Response
      */
-    public function edit(Settings $settings)
+    public function edit($id)
     {
         //
+        $setting = Settings::find($id);
+        return view('Admin/Setting/edit',compact('setting'));
+
+        return redirect('Setting/settings');
     }
 
     /**
@@ -67,9 +94,19 @@ class SettingsController extends Controller
      * @param  \App\Settings  $settings
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Settings $settings)
+    public function update(Request $request, $id)
     {
         //
+        $setting = Settings::find($id);
+        $setting->update([
+            'business_name'=>$request->business_name,
+            'box_address'=>$request->box_address,
+            'location'=>$request->location,
+            'vision'=>$request->vision,
+            'mission'=>$request->mission,
+            'logo'=>$request->logo,
+        ]);
+        return redirect('Setting/settings');
     }
 
     /**
@@ -78,8 +115,13 @@ class SettingsController extends Controller
      * @param  \App\Settings  $settings
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Settings $settings)
+    public function destroy($id)
     {
         //
+        $setting = Settings::find($id);
+        file::delete('album/'.$setting->logo);
+        $setting->delete();
+
+        return redirect('Setting/settings');
     }
 }

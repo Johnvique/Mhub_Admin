@@ -15,6 +15,11 @@ class CreateSystemUsersTable extends Migration
     {
         Schema::create('system_users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('username');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('image');
+            $table->string('password');
             $table->timestamps();
         });
     }

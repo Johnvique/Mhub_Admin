@@ -15,6 +15,8 @@ class ServicesController extends Controller
     public function index()
     {
         //
+        $services = Services::all();
+        return view('Admin/Service/services',compact('services'));
     }
 
     /**
@@ -36,6 +38,13 @@ class ServicesController extends Controller
     public function store(Request $request)
     {
         //
+        $service = new Services;
+        $service->name=$request->get('name');
+        $service->description=$request->get('description');
+        $service->price=$request->get('price');
+
+        $service->save();
+        return redirect();
     }
 
     /**
@@ -55,9 +64,13 @@ class ServicesController extends Controller
      * @param  \App\Services  $services
      * @return \Illuminate\Http\Response
      */
-    public function edit(Services $services)
+    public function edit($id)
     {
         //
+        $service = Services::find($id);
+        return view('Admin/Service/edit',compact('service'));
+
+        return redirect('Service/services');
     }
 
     /**
@@ -67,9 +80,17 @@ class ServicesController extends Controller
      * @param  \App\Services  $services
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Services $services)
+    public function update(Request $request, $id)
     {
         //
+        $service = Services::find($id);
+        $service->update([
+            'name'=>$request->name,
+            'description'=>$request->description,
+            'price'=>$request->price,
+        ]);
+
+        return redirect('Service/services');
     }
 
     /**
@@ -78,8 +99,12 @@ class ServicesController extends Controller
      * @param  \App\Services  $services
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Services $services)
+    public function destroy($id)
     {
         //
+        $service = Services::find($id);
+        $service->delete();
+
+        return redirect('Service/services');
     }
 }

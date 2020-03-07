@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use File;
 use App\Customers;
 use Illuminate\Http\Request;
 
@@ -15,6 +15,8 @@ class CustomersController extends Controller
     public function index()
     {
         //
+        $customers = Customers::all();
+        return view('Admin/Customer/customers',compact('customers'));
     }
 
     /**
@@ -36,6 +38,27 @@ class CustomersController extends Controller
     public function store(Request $request)
     {
         //
+
+        if ($request->hasFile('image')) {
+            $filenameWithExt = $request->file('image')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $path = $request->file('image')->move(public_path('album'), $fileNameToStore);
+        } else {
+            $fileNameToStore = 'default.jpg';
+        }
+
+        $customer = new customers;
+        $customer->name=$request->get('name');
+        $customer->email=$request->get('email');
+        $customer->phone=$request->get('phone');
+        $customer->location=$request->get('location');
+        $customer->message=$request->get('message');
+        $customer->image=$fileNameToStore;
+
+        $customer->save();
+        return redirect()->back();
     }
 
     /**
@@ -55,9 +78,13 @@ class CustomersController extends Controller
      * @param  \App\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customers $customers)
+    public function edit($id)
     {
         //
+        $customer = Customers::find($id);
+        return view('Admin/Customer/edit', compact('customer'));
+
+        return redirect()->back();
     }
 
     /**
@@ -67,9 +94,20 @@ class CustomersController extends Controller
      * @param  \App\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customers $customers)
+    public function update(Request $request, $id)
     {
         //
+        $customer = Customers::find($id);
+        $customer->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'location'=>$request->location,
+            'message'=>$request->message,
+            'image'=>$request->image,
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -78,8 +116,12 @@ class CustomersController extends Controller
      * @param  \App\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customers $customers)
+    public function destroy($id)
     {
         //
+        $customer = Customers::find($id);
+        file::delete('album/'.$customer->image);
+        $customer->delete();
+        return redirect()->back();
     }
 }

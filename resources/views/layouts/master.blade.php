@@ -37,7 +37,7 @@
             <img class="img-sider rounded-circle" src="{{asset('album/default.jpg')}}" alt="img-thumnail" 
             style="width: 5em; height: 5em">
         </div>
-        <div class="sidebar-brand-text mx-3">Mtaani-Tech Admin</div>
+        <div class="sidebar-brand-text mx-3">Support System</div>
       </a>
 
       <!-- Divider -->
@@ -45,7 +45,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-      <a class="nav-link" href="{{url('/')}}">
+      <a class="nav-link" href="{{url('/Admin/index')}}">
           <i class="fas fa-fw fa-home"></i>
           <span>Dashboard</span></a>
       </li>
@@ -61,13 +61,13 @@
       <!-- Nav Item - Pages Services Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseServices" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-wrench"></i>
+          <i class="fas fa-fw fa-cogs"></i>
           <span>Our Services</span>
         </a>
         <div id="collapseServices" class="collapse" aria-labelledby="headingServices" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Services Components:</h6>
-          <a class="collapse-item" href="{{('admin/services')}}">Services</a>
+          <a class="collapse-item" href="{{url('Admin/Service/services')}}">Main Services</a>
           </div>
         </div>
       </li>
@@ -81,7 +81,7 @@
         <div id="collapseClients" class="collapse" aria-labelledby="headingClients" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customers Utilities:</h6>
-          <a class="collapse-item" href="{{url('admin/customers')}}">Customers</a>
+          <a class="collapse-item" href="{{url('Admin/Customer/customers')}}">Customers</a>
           </div>
         </div>
       </li>
@@ -90,44 +90,56 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaff" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-users"></i>
-          <span>Registered Staff</span>
+          <span>Staff Members</span>
         </a>
         <div id="collapseStaff" class="collapse" aria-labelledby="headingStaff" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Staff Screens:</h6>
-          <a class="collapse-item" href="{{url('admin/staff')}}">Mtaani-Staff</a>
+          <a class="collapse-item" href="{{url('Admin/Staff_Member/staff')}}">Mtaani-Staff</a>
           </div>
         </div>
       </li>
-
-            <!-- Nav Item - Pages Mtaani-Staff Menu -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManage" aria-expanded="true" aria-controls="collapsePages">
-        <i class="fas fa-user"></i>
-            <span>User Management</span>
-                </a>
-                <div id="collapseManage" class="collapse" aria-labelledby="headingManage" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="{{url('admin/system_users')}}">System_users</a>
-                  <a class="collapse-item" href="{{url('admin/roles')}}">Roles</a>
-                  <a class="collapse-item" href="{{url('admin/permissions')}}">Permissions</a>
-            </div>
-    </div>
-</li>
 
             <!-- Pending Inquiries -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInquiry" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-comments"></i>
-                        <span>Clients Inquiries</span>
+                        <span>Notifications</span>
                             </a>
                             <div id="collapseInquiry" class="collapse" aria-labelledby="headingInquiry" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                              <a class="collapse-item" href="{{url('admin/inquiries')}}">Manage Inquiries</a>
+                              <a class="collapse-item" href="{{url('Admin/Notification/notifications')}}">Check Notifications</a>
                         </div>
                 </div>
             </li>
 
+                        <!-- Reserved Projects -->
+                        <li class="nav-item">
+                          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProjects" aria-expanded="true" aria-controls="collapseProjects">
+                              <i class="fas fa-briefcase"></i>
+                                  <span>Projects</span>
+                                      </a>
+                                      <div id="collapseProjects" class="collapse" aria-labelledby="headingProjects" data-parent="#accordionSidebar">
+                                  <div class="bg-white py-2 collapse-inner rounded">
+                                        <a class="collapse-item" href="{{url('Admin/Project/projects')}}">Current Projects</a>
+                                  </div>
+                          </div>
+                      </li>
+
+            <!-- Nav Item - Pages Mtaani-Staff Menu -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManage" aria-expanded="true" aria-controls="collapsePages">
+                  <i class="fas fa-user"></i>
+                      <span>User Management</span>
+                          </a>
+                          <div id="collapseManage" class="collapse" aria-labelledby="headingManage" data-parent="#accordionSidebar">
+                      <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{{url('Admin/User/system_users')}}">System_users</a>
+                            <a class="collapse-item" href="{{url('Admin/Role/roles')}}">Roles</a>
+                            <a class="collapse-item" href="{{url('Admin/Permission/permissions')}}">Permissions</a>
+                      </div>
+              </div>
+          </li>
 
 
       <!-- Divider -->
@@ -185,7 +197,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-800 medium">{{ Auth::user()->name }}</span>
               <img class="img-profile rounded-circle" src="{{asset('album/logo-2.jpg')}}">
               </a>
               <!-- Dropdown - User Information -->

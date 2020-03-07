@@ -15,6 +15,8 @@ class PermissionsController extends Controller
     public function index()
     {
         //
+        $permissions = Permissions::all();
+        return view('Admin/Permission/permissions',compact('permissions'));
     }
 
     /**
@@ -36,6 +38,12 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         //
+        $permission = new Permissions;
+        $permission->display_name=$request->get('display_name');
+        $permission->description=$request->get('description'); 
+
+        $permission->save();
+        return redirect()->back();
     }
 
     /**
@@ -55,9 +63,13 @@ class PermissionsController extends Controller
      * @param  \App\Permissions  $permissions
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permissions $permissions)
+    public function edit($id)
     {
         //
+        $permission = Permissions::find($id);
+        return view('Admin/Permission/edit',compact('permission'));
+
+        return redirect('Permission/permissions');
     }
 
     /**
@@ -67,9 +79,16 @@ class PermissionsController extends Controller
      * @param  \App\Permissions  $permissions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permissions $permissions)
+    public function update(Request $request, $id)
     {
         //
+        $permission = Permissions::find($id);
+        $permission->update([
+            'display_name'=>$request->display_name,
+            'description'=>$request->description,
+        ]);
+
+        return redirect('Permission/permissions');
     }
 
     /**
@@ -78,8 +97,12 @@ class PermissionsController extends Controller
      * @param  \App\Permissions  $permissions
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Permissions $permissions)
+    public function destroy($id)
     {
         //
+        $permission = Permissions::find($id);
+        $permission->delete();
+
+        return redirect('Permission/permissions');
     }
 }
